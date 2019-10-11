@@ -1,0 +1,10 @@
+#!/bin/sh
+
+PV_OR_CAT=cat
+
+if which pv; then
+  PV_OR_CAT=pv
+fi
+
+$PV_OR_CAT cedr.all.sql.gz | gunzip -dc - | docker exec -i dotacni_parazit_mysql mysql --password=password cedr
+cat views.sql | docker exec -i dotacni_parazit_mysql mysql --password=password -v cedr

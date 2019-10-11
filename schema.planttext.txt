@@ -1,0 +1,343 @@
+@startuml
+hide circle
+
+title Export databaze dotacniho parazita
+
+skinparam componentStyle uml2
+skinparam handwritten true
+skinparam roundcorner 5
+
+skinparam class {
+	BackgroundColor #fafafa
+	BackgroundColor<<ciselnik>> LightGray
+	BackgroundColor<<core>> LightYellow
+}
+
+class viewCiselnikPravniForma <<ciselnik>> {
+  pravniFormaKod: Decimal
+  pravniFormaNazev: String
+  pravniFormaNazevZkraceny: String
+  pravniFormaTypKod: Decimal
+  zaznamPlatnostOdDatum: Timestamp
+  zaznamPlatnostDoDatum: Timestamp
+}
+
+note top
+  sjednoceni <b>ciselnikPravniFormav01</b>
+  a <b>ciselnikPravniFormav02</b>
+end note
+
+class ciselnikStatv01 <<ciselnik>> {
+  id: String
+  statKod3Znaky: String
+  statKod3Cisla: Decimal
+  statKodOmezeny: String
+  statNazev: String
+  statNazevZkraceny: String
+  statNazevEn: String
+  statNazevZkracenyEn: String
+  zaznamPlatnostOdDatum: Timestamp
+  zaznamPlatnostDoDatum: Timestamp
+}
+
+class ciselnikKrajv01 <<ciselnik>> {
+  id: String
+  krajKod: Decimal
+  krajNazev: String
+  globalniNavrhZmenaIdentifikator: Decimal
+  nespravnostIndikator: Boolean
+  transakceIdentifikator: Decimal
+  zaznamPlatnostOdDatum: Timestamp
+  zaznamPlatnostDoDatum: Timestamp
+}
+
+class ciselnikOkresv01 <<ciselnik>> {
+  id: String
+  okresKod: Decimal
+  okresNazev: String
+  okresNutsKod: String
+  krajNad: String
+  vuscNad: String
+  globalniNavrhZmenaIdentifikator: Decimal
+  nespravnostIndikator: Boolean
+  transakceIdentifikator: Decimal
+  zaznamPlatnostOdDatum: Timestamp
+  zaznamPlatnostDoDatum: Timestamp
+}
+
+ciselnikOkresv01 -right[dashed]-> ciselnikKrajv01: krajNadKod
+
+class ciselnikObecv01 <<ciselnik>> {
+  id: String
+  obecKod: Decimal
+  obecNutsKod: String
+  obecNazev: String
+  okresNad: String
+  globalniNavrhZmenaIdentifikator: Decimal
+  nespravnostIndikator: Boolean
+  transakceIdentifikator: Decimal
+  zaznamPlatnostOdDatum: Timestamp
+  zaznamPlatnostDoDatum: Timestamp
+}
+
+ciselnikObecv01 -right[dashed]-> ciselnikOkresv01: okresNadKod
+
+class viewCiselnikOperacniProgram <<ciselnik>> {
+  idOperacniProgram: String
+  operacaniProgramKod: Decimal
+  operacaniProgramNazev: String
+  operacaniProgramCislo: Integer
+  zaznamPlatnostOdDatum: Timestamp
+  zaznamPlatnostDoDatum: Timestamp
+}
+
+note top
+  sjednoceni <b>ciselnikMmrOperacniProgramv01</b>
+  a <b>ciselnikCedrOperacniProgramv01</b>
+end note
+
+class viewCiselnikGrantoveSchema <<ciselnik>> {
+  idGrantoveSchema: String
+  grantoveSchemaKod: Decimal
+  grantoveSchemaNazev: String
+  grantoveSchemaCislo: Integer
+  zaznamPlatnostOdDatum: Timestamp
+  zaznamPlatnostDoDatum: Timestamp
+}
+
+note top
+  sjednoceni <b>ciselnikMmrGrantoveSchemav01</b>
+  a <b>ciselnikCedrGrantoveSchemav01</b>
+end note
+
+class ciselnikDotacePoskytovatelv01 <<ciselnik>> {
+  id: String
+  dotacePoskytovatelKod: Decimal
+  dotacePoskytovatelNazev: String
+  dotacePoskytovatelNadrizenyKod: Integer
+  zaznamPlatnostOdDatum: Timestamp
+  zaznamPlatnostDoDatum: Timestamp
+}
+
+class ciselnikFinancniProstredekCleneniv01 <<ciselnik>> {
+  id: String
+  financniProstredekCleneniKod: Decimal
+  financniProstredekCleneniNazev: String
+  zaznamPlatnostOdDatum: Timestamp
+  zaznamPlatnostDoDatum: Timestamp
+}
+
+class ciselnikFinancniZdrojv01 <<ciselnik>> {
+  id: String
+  financniZdrojKod: String
+  financniZdrojNadrizenyKod: String
+  financniZdrojNazev: String
+  zaznamPlatnostOdDatum: Timestamp
+  zaznamPlatnostDoDatum: Timestamp
+}
+
+class ciselnikDotaceTitulv01 <<ciselnik>> {
+  idDotaceTitul: String
+  dotaceTitulKod: Decimal
+  dotaceTitulVlastniKod: String
+  dotaceTitulNazev: String
+  dotaceTitulNazevZkraceny: String
+  statniRozpocetKapitolaKod: Decimal
+  zaznamPlatnostOdDatum: Timestamp
+  zaznamPlatnostDoDatum: Timestamp
+}
+
+class ciselnikUcelZnakv01 <<ciselnik>> {
+  idUcelZnak: String
+  ucelZnakKod: Decimal
+  ucelZnakNazev: String
+  statniRozpocetKapitolaKod: Decimal
+  zaznamPlatnostOdDatum: Timestamp
+  zaznamPlatnostDoDatum: Timestamp
+}
+
+class Osoba [[https://dotacni-parazit.cz/db-statistiky#Osoba]] {
+  idOsoba: String
+  jmeno: String
+  prijmeni: String
+  narozeniRok: Decimal
+}
+
+Osoba -up[dashed]-> ciselnikObecv01: bydlisteObecKod
+
+class EkonomikaSubjekt [[https://dotacni-parazit.cz/db-statistiky#EkonomikaSubjekt]] {
+  id: String
+  ico: Decimal
+}
+
+class PrijemcePomoci [[https://dotacni-parazit.cz/db-statistiky#PrijemcePomoci]] {
+  idPrijemce: String
+  ico: Decimal { 0 = nemá IČO }
+  obchodniJmeno: String
+  jmeno: String
+  prijmeni: String
+  rokNarozeni: Decimal
+  dPlatnost: Timestamp
+  dtAktualizace: Timestamp
+}
+
+PrijemcePomoci -up-> viewCiselnikPravniForma: iriPravniForma
+PrijemcePomoci -up-> ciselnikStatv01: iriStat
+PrijemcePomoci -up-> Osoba: iriOsoba
+PrijemcePomoci -up-> EkonomikaSubjekt: iriEkonomikaSubjekt
+
+class AdresaBydliste [[https://dotacni-parazit.cz/db-statistiky#AdresaBydliste]] {
+  idAdresa: String
+  adrTyp: 3
+  obecKod: String
+  obecNazev: String
+  dPlatnost: Timestamp
+  dtAktualizace: Timestamp
+}
+
+AdresaBydliste -up-> PrijemcePomoci: idPrijemce
+AdresaBydliste -up-> ciselnikStatv01: iriStat
+AdresaBydliste -up-> ciselnikObecv01: obec
+
+class AdresaSidlo [[https://dotacni-parazit.cz/db-statistiky#AdresaSidlo]] {
+  idAdresa: String
+  adrTyp: 3
+  obecKod: String
+  obecNazev: String
+  psc: Decimal
+  adresniMistoKod: Decimal
+  iriCastObce: Integer
+  castObceKod: Decimal
+  cisloDomovni: Decimal
+  cisloOrientacni: String
+  uliceKod: Decimal
+  ulice: String
+  adresaText: String
+  dPlatnost: Timestamp
+  dtAktualizace: Timestamp
+}
+
+AdresaSidlo -up-> PrijemcePomoci: idPrijemce
+AdresaSidlo -up-> ciselnikStatv01: iriStat
+AdresaSidlo -up-> ciselnikObecv01: iriObec
+
+class Dotace <<core>> [[https://dotacni-parazit.cz/db-statistiky#Dotace]] {
+  idDotace: String
+  projektKod: String
+  projektIdnetifikator: String {sic!}
+  projektNazev: String
+  podpisDatum: Timestamp
+  zahajeniPlanovaneDatum: Timestamp
+  ukonceniPlanovaneDatum: Timestamp
+  zahajeniSkutecneDatum: Timestamp
+  ukonceniSkutecneDatum: Timestamp
+  zmenaSmlouvyIndikator: Boolean
+  subjektRozliseniKod: Decimal
+  dPlatnost: Timestamp
+  dtAktualizace: Timestamp
+  .. ostatni ..
+  iriPodprogram: String
+  iriPriorita: String
+  iriOpatreni: String
+  iriPodopatreni: String
+  iriProgramPodpora: String
+  iriProgram: String
+  iriTypCinnosti: String
+}
+
+Dotace -up-> PrijemcePomoci: idPrijemce
+Dotace -up-> viewCiselnikOperacniProgram: iriOperacniProgram
+Dotace -up-> viewCiselnikGrantoveSchema: iriGrantoveSchema
+
+class Etapa [[https://dotacni-parazit.cz/db-statistiky#Etapa]] {
+  idEtapa: String
+  etapaCislo: Decimal
+  etapaNazev: String
+  poznamka: String
+  zahajeniPlanovaneDatum: Timestamp
+  ukonceniPlanovaneDatum: Timestamp
+  zahajeniSkutecneDatum: Timestamp
+  ukonceniSkutecneDatum: Timestamp
+  dtAktualizace: Timestamp
+}
+
+Etapa -up-> Dotace: idDotace
+
+class UzemniRealizace [[https://dotacni-parazit.cz/db-statistiky#UzemiRealizace]] {
+  idUzemi: String
+
+  mezinarodniPusobnostIndikator: Boolean
+  iriRealizovanNaUzemiStatu: Integer
+  uzemniRealizacePopis: Integer
+  obvodPrahaPredavaciKod: Integer
+  spravniObvodPrahaPredavaciKod: Integer
+  stavebniObjektKod: Integer
+  uliceKod: Integer
+  iriCastObce: Integer
+  iriKraj: Integer
+  iriMestskyObvodMestskaCast: Integer
+  iriObec: Integer
+  iriOkres: Integer
+  iriVusc: Integer
+  adresniMistoKod: Integer
+  dPlatnost: Timestamp
+  dtAktualizace: Timestamp
+}
+
+UzemniRealizace -up-> Dotace: idDotace
+UzemniRealizace -up[dashed]-> ciselnikOkresv01: okresNutsKod
+
+class Rozhodnuti <<core>> [[https://dotacni-parazit.cz/db-statistiky#RozpoctoveObdobi]] {
+  idRozhodnuti: String
+  castkaPozadovana: Decimal
+  castkaRozhodnuta: Decimal
+  rokRozhodnuti: Decimal
+  investiceIndikator: Boolean
+  navratnostIndikator: Boolean
+  refundaceIndikator: Boolean
+  dPlatnost: Timestamp
+  dtAktualizace: Timestamp
+}
+
+Rozhodnuti -up-> Dotace: idDotace
+Rozhodnuti -up-> ciselnikDotacePoskytovatelv01: iriPoskytovatelDotace
+Rozhodnuti -up-> ciselnikFinancniProstredekCleneniv01: iriCleneniFinancnichProstredku
+Rozhodnuti -up-> ciselnikFinancniZdrojv01: iriFinancniZdroj
+
+class SplatkaKalendar [[https://dotacni-parazit.cz/db-statistiky#SplatkaKalendar]] {
+  idSKalendar: String
+  castkaSplatkaPlanovana: Decimal
+  castkaSplatkaSkutecna: Decimal
+  uroceniIndikator: Boolean
+  dtAktualizace: Timestamp
+}
+
+SplatkaKalendar -up-> Rozhodnuti: idRozhodnuti
+
+class RozpoctoveObdobi <<core>> [[https://dotacni-parazit.cz/db-statistiky#RozpoctoveObdobi]] {
+  idObdobi: String
+  castkaUvolnena: Decimal
+  castkaCerpana: Decimal
+  castkaVracena: Decimal
+  castkaSpotrebovana: Decimal
+  rozpoctoveObdobi: Decimal
+  vyporadaniKod: Integer
+  dPlatnost: Timestamp
+  dtAktualizace: Timestamp
+}
+
+RozpoctoveObdobi -up-> Rozhodnuti: idRozhodnuti
+RozpoctoveObdobi -up-> ciselnikDotaceTitulv01: iriDotacniTitul
+RozpoctoveObdobi -up-> ciselnikUcelZnakv01: iriUcelovyZnak
+
+class RozhodnutiSmlouva [[https://dotacni-parazit.cz/db-statistiky#RozhodnutiSmlouva]] {
+  idSmlouva: String
+  cisloJednaciRozhodnuti: String
+  dokumentDruhKod: Integer
+  rozhodnutiDatum: Timestamp
+  dtAktualizace: Timestamp
+}
+
+RozhodnutiSmlouva -up-> Rozhodnuti: idRozhodnuti
+
+@enduml
