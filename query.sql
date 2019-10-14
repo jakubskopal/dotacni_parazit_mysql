@@ -6,12 +6,17 @@ SET GLOBAL sql_mode = '';
 SELECT
     prijemceIco                                AS 'ICO',
     prijemceJmenoPrijemce                      AS 'Prijemce',
-    # Pokud nema projekt nazev, pokusime se ho ziskat seznamem nazvu etap
     dotaceProjektNazev                         AS 'Projekt - Nazev',
     # Ucel projektu nedokazeme najit
-    '?'                                        AS 'Projekt - Ucel',
     dotaceProjektKod                           AS 'Projekt - Kod',
     dotaceProjektIdentifikator                 AS 'Projekt - Identifikator',
+    # Dotacni titul nebo ucelovy znak
+    COALESCE(
+            dotaceTitulKod,
+            ucelZnakKod)                       AS 'Dot. Titul/Ucel Znak - Kod',
+    COALESCE(
+            dotaceTitulNazev,
+            ucelZnakNazev)                     AS 'Dot. Titul/Ucel Znak - Nazev',
     # Operacni program nebo grantove schema
     COALESCE(
             operacniProgramKod,
@@ -21,7 +26,7 @@ SELECT
             grantoveSchemaNazev)               AS 'OP/GS - Nazev',
     rozhodnutiDotacePoskytovatelKod            AS 'Poskytovatel - Kod',
     rozhodnutiDotacePoskytovatelNazev          AS 'Poskytovatel - Nazev',
-#     rozhodnuti.tuzemskyZdroj                    AS 'Castka - Zdroj je CR',
+    rozhodnutiTuzemskyZdroj                    AS 'Zdroj je CR',
     rozhodnutiRokRozhodnuti                    AS 'Rok Rozhodnuti',
     prijemceOkresNutsKod                       AS 'Okres - NUTS',
     prijemceOkresNazev                         AS 'Okres - Nazev',
@@ -41,8 +46,13 @@ GROUP BY
     idRozhodnuti,
     prijemceIco,
     prijemceJmenoPrijemce,
+    dotaceTitulKod,
+    ucelZnakKod,
+    dotaceTitulNazev,
+    ucelZnakNazev,
     dotaceProjektKod,
     dotaceProjektIdentifikator,
+    dotaceProjektNazev,
     operacniProgramKod,
     grantoveSchemaKod,
     operacniProgramNazev,

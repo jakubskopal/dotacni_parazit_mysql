@@ -81,6 +81,8 @@ SELECT
 FROM RozpoctoveObdobi;
 
 ALTER TABLE viewRozpoctoveObdobi ADD PRIMARY KEY (idObdobi);
+ALTER TABLE viewRozpoctoveObdobi ADD FOREIGN KEY (iriDotacniTitul) REFERENCES ciselnikDotaceTitulv01(idDotaceTitul);
+ALTER TABLE viewRozpoctoveObdobi ADD FOREIGN KEY (iriUcelovyZnak) REFERENCES ciselnikUcelZnakv01(idUcelZnak);
 
 DROP TABLE IF EXISTS viewPrijemcePomoci;
 
@@ -155,6 +157,10 @@ SELECT
        obdobi.iriUcelovyZnak                                                      AS obdobiIriUcelovyZnak,
        obdobi.dPlatnost                                                           AS obdobiDPlatnost,
        obdobi.dtAktualizace                                                       AS obdobiDTAktualizace,
+       titul.dotaceTitulKod                                                       AS dotaceTitulKod,
+       titul.dotaceTitulNazev                                                     AS dotaceTitulNazev,
+       ucelZnak.ucelZnakKod                                                       AS ucelZnakKod,
+       ucelZnak.ucelZnakNazev                                                     AS ucelZnakNazev,
        rozhodnuti.idRozhodnuti                                                    AS idRozhodnuti,
        rozhodnuti.castkaPozadovana                                                AS rozhodnutiCastkaPozadovana,
        rozhodnuti.castkaRozhodnuta                                                AS rozhodnutiCastkaRozhodnuta,
@@ -221,7 +227,9 @@ FROM
     INNER JOIN viewDotace dotace on dotace.idDotace = rozhodnuti.idDotace
     INNER JOIN viewPrijemcePomoci prijemce on prijemce.idPrijemce = dotace.idPrijemce
     LEFT JOIN viewCiselnikOperacniProgram operacniProgram ON operacniProgram.idOperacniProgram = dotace.iriOperacniProgram
-    LEFT JOIN viewCiselnikGrantoveSchema grantoveSchema ON grantoveSchema.idGrantoveSchema = dotace.iriGrantoveSchema;
+    LEFT JOIN viewCiselnikGrantoveSchema grantoveSchema ON grantoveSchema.idGrantoveSchema = dotace.iriGrantoveSchema
+    LEFT JOIN ciselnikDotaceTitulv01 titul ON titul.idDotaceTitul = obdobi.iriDotacniTitul
+    LEFT JOIN ciselnikUcelZnakv01 ucelZnak ON ucelZnak.idUcelZnak = obdobi.iriUcelovyZnak;
 
 ALTER TABLE viewCombined ADD PRIMARY KEY (idPrijemce, idDotace, idRozhodnuti, idObdobi);
 
