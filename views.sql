@@ -147,32 +147,21 @@ DROP TABLE IF EXISTS viewCombined;
 
 CREATE TABLE viewCombined AS
 SELECT
-       obdobi.idObdobi                                                            AS idObdobi,
-       obdobi.castkaCerpana                                                       AS obdobiCastkaCerpana,
-       obdobi.castkaUvolnena                                                      AS obdobiCastkaUvolnena,
-       obdobi.castkaVracena                                                       AS obdobiCastkaVracena,
-       obdobi.castkaSpotrebovana                                                  AS obdobiCastkaSpotrebovana,
-       obdobi.rozpoctoveObdobi                                                    AS obdobiRozpoctoveObdobi,
-       obdobi.iriDotacniTitul                                                     AS obdobiIriDotacniTitul,
-       obdobi.iriUcelovyZnak                                                      AS obdobiIriUcelovyZnak,
-       obdobi.dPlatnost                                                           AS obdobiDPlatnost,
-       obdobi.dtAktualizace                                                       AS obdobiDTAktualizace,
-       titul.dotaceTitulKod                                                       AS dotaceTitulKod,
-       titul.dotaceTitulNazev                                                     AS dotaceTitulNazev,
-       ucelZnak.ucelZnakKod                                                       AS ucelZnakKod,
-       ucelZnak.ucelZnakNazev                                                     AS ucelZnakNazev,
-       rozhodnuti.idRozhodnuti                                                    AS idRozhodnuti,
-       rozhodnuti.castkaPozadovana                                                AS rozhodnutiCastkaPozadovana,
-       rozhodnuti.castkaRozhodnuta                                                AS rozhodnutiCastkaRozhodnuta,
-       rozhodnuti.rokRozhodnuti                                                   AS rozhodnutiRokRozhodnuti,
-       rozhodnuti.investiceIndikator                                              AS rozhodnutiInvesticeIndikator,
-       rozhodnuti.navratnostIndikator                                             AS rozhodnutiNavratnostIndikator,
-       rozhodnuti.refundaceIndikator                                              AS rozhodnutiRefundaceIndikator,
-       rozhodnuti.tuzemskyZdroj                                                   AS rozhodnutiTuzemskyZdroj,
-       rozhodnuti.financniZdrojKod                                                AS rozhodnutiFinancniZdrojKod,
-       rozhodnuti.financniZdrojNazev                                              AS rozhodnutiFinancniZdrojNazev,
-       rozhodnuti.dotacePoskytovatelKod                                           AS rozhodnutiDotacePoskytovatelKod,
-       rozhodnuti.dotacePoskytovatelNazev                                         AS rozhodnutiDotacePoskytovatelNazev,
+       prijemce.idPrijemce                                                        AS idPrijemce,
+       prijemce.ico                                                               AS prijemceIco,
+       prijemce.jmenoPrijemce                                                     AS prijemceJmenoPrijemce,
+       prijemce.obchodniJmeno                                                     AS prijemceObchodniJmeno,
+       prijemce.prijmeni                                                          AS prijemcePrijmeni,
+       prijemce.jmeno                                                             AS prijemceJmeno,
+       prijemce.rokNarozeni                                                       AS prijemceRokNarozeni,
+       prijemce.obecKod                                                           AS prijemceObecKod,
+       prijemce.iriObec                                                           AS prijemceIriObec,
+       prijemce.obecNazev                                                         AS prijemceObecNazev,
+       prijemce.obecNutsKod                                                       AS prijemceObecNutsKod,
+       prijemce.iriOkres                                                          AS prijemceIriOkres,
+       prijemce.okresNazev                                                        AS prijemceOkresNazev,
+       prijemce.okresNutsKod                                                      AS prijemceOkresNutsKod,
+
        dotace.idDotace                                                            AS idDotace,
        dotace.projektKod                                                          AS dotaceProjektKod,
        dotace.podpisDatum                                                         AS dotacePodpisDatum,
@@ -195,41 +184,60 @@ SELECT
        dotace.iriProgram                                                          AS dotaceIriProgram,
        dotace.dPlatnost                                                           AS dotaceDPlatnost,
        dotace.dtAktualizace                                                       AS dotaceDTAktualizace,
+
        operacniProgram.idOperacniProgram                                          AS idOperacniProgram,
-       operacniProgram.operacaniProgramKod                                        AS operacniProgramKod,
-       operacniProgram.operacaniProgramNazev                                      AS operacniProgramNazev,
-       operacniProgram.operacaniProgramCislo                                      AS operacniProgramCislo,
-       operacniProgram.zaznamPlatnostOdDatum                                      AS operacniProgramZaznamPlatnostOdDatum,
-       operacniProgram.zaznamPlatnostDoDatum                                      AS operacniProgramZaznamPlatnostDoDatum,
+       operacniProgram.operacaniProgramKod                                        AS dotaceOperacniProgramKod,
+       operacniProgram.operacaniProgramNazev                                      AS dotaceOperacniProgramNazev,
+       operacniProgram.operacaniProgramCislo                                      AS dotaceOperacniProgramCislo,
+       operacniProgram.zaznamPlatnostOdDatum                                      AS dotaceOperacniProgramZaznamPlatnostOdDatum,
+       operacniProgram.zaznamPlatnostDoDatum                                      AS dotaceOperacniProgramZaznamPlatnostDoDatum,
+
        grantoveSchema.idGrantoveSchema                                            AS idGrantoveSchema,
-       grantoveSchema.grantoveSchemaKod                                           AS grantoveSchemaKod,
-       grantoveSchema.grantoveSchemaNazev                                         AS grantoveSchemaNazev,
-       grantoveSchema.grantoveSchemaCislo                                         AS grantoveSchemaCislo,
-       grantoveSchema.zaznamPlatnostOdDatum                                       AS grantoveSchemaZaznamPlatnostOdDatum,
-       grantoveSchema.zaznamPlatnostDoDatum                                       AS grantoveSchemaZaznamPlatnostDoDatum,
-       prijemce.idPrijemce                                                        AS idPrijemce,
-       prijemce.ico                                                               AS prijemceIco,
-       prijemce.jmenoPrijemce                                                     AS prijemceJmenoPrijemce,
-       prijemce.obchodniJmeno                                                     AS prijemceObchodniJmeno,
-       prijemce.prijmeni                                                          AS prijemcePrijmeni,
-       prijemce.jmeno                                                             AS prijemceJmeno,
-       prijemce.rokNarozeni                                                       AS prijemceRokNarozeni,
-       prijemce.obecKod                                                           AS prijemceObecKod,
-       prijemce.iriObec                                                           AS prijemceIriObec,
-       prijemce.obecNazev                                                         AS prijemceObecNazev,
-       prijemce.obecNutsKod                                                       AS prijemceObecNutsKod,
-       prijemce.iriOkres                                                          AS prijemceIriOkres,
-       prijemce.okresNazev                                                        AS prijemceOkresNazev,
-       prijemce.okresNutsKod                                                      AS prijemceOkresNutsKod
+       grantoveSchema.grantoveSchemaKod                                           AS dotaceGrantoveSchemaKod,
+       grantoveSchema.grantoveSchemaNazev                                         AS dotaceGrantoveSchemaNazev,
+       grantoveSchema.grantoveSchemaCislo                                         AS dotaceGrantoveSchemaCislo,
+       grantoveSchema.zaznamPlatnostOdDatum                                       AS dotaceGrantoveSchemaZaznamPlatnostOdDatum,
+       grantoveSchema.zaznamPlatnostDoDatum                                       AS dotaceGrantoveSchemaZaznamPlatnostDoDatum,
+
+       rozhodnuti.idRozhodnuti                                                    AS idRozhodnuti,
+       rozhodnuti.castkaPozadovana                                                AS rozhodnutiCastkaPozadovana,
+       rozhodnuti.castkaRozhodnuta                                                AS rozhodnutiCastkaRozhodnuta,
+       rozhodnuti.rokRozhodnuti                                                   AS rozhodnutiRokRozhodnuti,
+       rozhodnuti.investiceIndikator                                              AS rozhodnutiInvesticeIndikator,
+       rozhodnuti.navratnostIndikator                                             AS rozhodnutiNavratnostIndikator,
+       rozhodnuti.refundaceIndikator                                              AS rozhodnutiRefundaceIndikator,
+       rozhodnuti.tuzemskyZdroj                                                   AS rozhodnutiTuzemskyZdroj,
+       rozhodnuti.financniZdrojKod                                                AS rozhodnutiFinancniZdrojKod,
+       rozhodnuti.financniZdrojNazev                                              AS rozhodnutiFinancniZdrojNazev,
+       rozhodnuti.dotacePoskytovatelKod                                           AS rozhodnutiDotacePoskytovatelKod,
+       rozhodnuti.dotacePoskytovatelNazev                                         AS rozhodnutiDotacePoskytovatelNazev,
+
+       obdobi.idObdobi                                                            AS idObdobi,
+       obdobi.castkaCerpana                                                       AS obdobiCastkaCerpana,
+       obdobi.castkaUvolnena                                                      AS obdobiCastkaUvolnena,
+       obdobi.castkaVracena                                                       AS obdobiCastkaVracena,
+       obdobi.castkaSpotrebovana                                                  AS obdobiCastkaSpotrebovana,
+       obdobi.rozpoctoveObdobi                                                    AS obdobiRozpoctoveObdobi,
+       obdobi.iriDotacniTitul                                                     AS obdobiIriDotacniTitul,
+       obdobi.iriUcelovyZnak                                                      AS obdobiIriUcelovyZnak,
+       obdobi.dPlatnost                                                           AS obdobiDPlatnost,
+       obdobi.dtAktualizace                                                       AS obdobiDTAktualizace,
+
+       titul.dotaceTitulKod                                                       AS obdobiDotaceTitulKod,
+       titul.dotaceTitulNazev                                                     AS obdobiDotaceTitulNazev,
+
+       ucelZnak.ucelZnakKod                                                       AS obdobiUcelZnakKod,
+       ucelZnak.ucelZnakNazev                                                     AS obdobiUcelZnakNazev
 FROM
-    viewRozpoctoveObdobi obdobi
-    INNER JOIN viewRozhodnuti rozhodnuti on rozhodnuti.idRozhodnuti = obdobi.idRozhodnuti
-    INNER JOIN viewDotace dotace on dotace.idDotace = rozhodnuti.idDotace
+    viewDotace dotace
+    INNER JOIN viewRozhodnuti rozhodnuti on dotace.idDotace = rozhodnuti.idDotace
     INNER JOIN viewPrijemcePomoci prijemce on prijemce.idPrijemce = dotace.idPrijemce
+    LEFT JOIN viewRozpoctoveObdobi obdobi on rozhodnuti.idRozhodnuti = obdobi.idRozhodnuti
     LEFT JOIN viewCiselnikOperacniProgram operacniProgram ON operacniProgram.idOperacniProgram = dotace.iriOperacniProgram
     LEFT JOIN viewCiselnikGrantoveSchema grantoveSchema ON grantoveSchema.idGrantoveSchema = dotace.iriGrantoveSchema
     LEFT JOIN ciselnikDotaceTitulv01 titul ON titul.idDotaceTitul = obdobi.iriDotacniTitul
     LEFT JOIN ciselnikUcelZnakv01 ucelZnak ON ucelZnak.idUcelZnak = obdobi.iriUcelovyZnak;
 
 ALTER TABLE viewCombined ADD PRIMARY KEY (idPrijemce, idDotace, idRozhodnuti, idObdobi);
+ALTER TABLE viewCombined ADD INDEX idx_viewCombined_logical (prijemceIco, dotacePodpisDatum, dotaceProjektIdentifikator, rozhodnutiRokRozhodnuti, obdobiRozpoctoveObdobi)
 
